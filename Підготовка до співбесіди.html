@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRECISION конструктор - Підготовка до співбесіди</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            background: white;
+            padding: 40px;
+            line-height: 1.4;
+        }
+
+        .document {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px double #000;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .header h2 {
+            font-size: 14pt;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 12pt;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .task-description {
+            background: #f5f5f5;
+            border: 2px solid #333;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0;
+        }
+
+        .task-description h3 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+
+        .task-description p {
+            font-size: 11pt;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 10pt;
+        }
+
+        th {
+            background: #e0e0e0;
+            border: 2px solid #000;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11pt;
+            vertical-align: middle;
+        }
+
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .component-letter {
+            background: #d0d0d0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 12pt;
+            width: 8%;
+        }
+
+        .component-name {
+            background: #f0f0f0;
+            font-weight: bold;
+            width: 22%;
+            font-size: 11pt;
+        }
+
+        .option-cell {
+            width: 70%;
+            font-size: 10pt;
+        }
+
+        .option-title {
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 3px;
+        }
+
+        .option-description {
+            color: #333;
+            font-style: italic;
+            font-size: 9pt;
+            line-height: 1.3;
+        }
+
+        .option-item {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .instructions {
+            background: #f9f9f9;
+            border: 2px solid #666;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h4 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+            font-size: 11pt;
+        }
+
+        .example-section {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .example-section h4 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .example-prompt {
+            font-size: 11pt;
+            line-height: 1.5;
+            padding: 10px;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .document {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 9pt;
+            }
+            
+            th, td {
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="header">
+            <h1>Конструктор промптів за технікою PRECISION</h1>
+            <h2>Завдання: Підготовка до співбесіди</h2>
+            <p>Для учнів 10 класу</p>
+            <p>Дисципліна: Професійна орієнтація / Інформатика</p>
+        </div>
+
+        <div class="task-description">
+            <h3>Опис завдання:</h3>
+            <p><strong>Тема:</strong> Підготовка до співбесіди</p>
+            <p><strong>Мета:</strong> Скласти промпт для підготовки до співбесіди на літнє стажування в медіа-компанії</p>
+            <p><strong>Очікуваний результат:</strong> Список питань, приклади відповідей та поради щодо поведінки</p>
+        </div>
+
+        <div class="instructions">
+            <h4>Інструкція для виконання:</h4>
+            <ol>
+                <li>Оберіть по одному варіанту з кожного розділу таблиці</li>
+                <li>Запишіть обрані варіанти в окремий документ</li>
+                <li>Сформулюйте промпт, об'єднавши всі компоненти</li>
+                <li>Протестуйте промпт з AI (ChatGPT, Claude, Gemini)</li>
+                <li>Проаналізуйте якість отриманої відповіді</li>
+            </ol>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Літера</th>
+                    <th>Компонент</th>
+                    <th>Варіанти для вибору</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Purpose -->
+                <tr>
+                    <td class="component-letter">P</td>
+                    <td class="component-name">Purpose<br><em>(Призначення/Мета)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Літнє стажування</div>
+                            <div class="option-description">Готуюся до співбесіди на літнє стажування в медіа-компанії для школярів</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Перша робота</div>
+                            <div class="option-description">Підготовка до першої серйозної співбесіди на роботу в медіа-сфері</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Волонтерська позиція</div>
+                            <div class="option-description">Співбесіда на волонтерську позицію в молодіжному медіа-проекті</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Стипендіальна програма</div>
+                            <div class="option-description">Відбір у стипендіальну програму для майбутніх журналістів</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Курси підвищення кваліфікації</div>
+                            <div class="option-description">Вступ на спеціалізовані курси з медіа та комунікацій</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Шкільний медіа-проект</div>
+                            <div class="option-description">Участь у створенні шкільного медіа-центру або радіо</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Role -->
+                <tr>
+                    <td class="component-letter">R</td>
+                    <td class="component-name">Role<br><em>(Роль учасників)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: HR-експерт і кандидат</div>
+                            <div class="option-description">Ти досвідчений HR-фахівець медіа-індустрії, я підліток без досвіду роботи</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Кар'єрний консультант</div>
+                            <div class="option-description">Ти спеціаліст з кар'єрного консультування для молоді в креативних індустріях</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Успішний журналіст-ментор</div>
+                            <div class="option-description">Ти журналіст з 10-річним досвідом, який допомагає молодим колегам</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Тренер з розвитку навичок</div>
+                            <div class="option-description">Ти тренер, який спеціалізується на підготовці до співбесід</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Медіа-продюсер</div>
+                            <div class="option-description">Ти продюсер, який часто проводить співбесіди з молодими кандидатами</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Координатор стажувань</div>
+                            <div class="option-description">Ти відповідальний за програми стажувань у великій медіа-компанії</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Expectations -->
+                <tr>
+                    <td class="component-letter">E</td>
+                    <td class="component-name">Expectations<br><em>(Очікування якості)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Максимальна практичність</div>
+                            <div class="option-description">Потрібні конкретні поради, які можна застосувати вже завтра</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Впевненість та самопрезентація</div>
+                            <div class="option-description">Хочу навчитися впевнено презентувати себе та свої навички</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Галузева специфіка</div>
+                            <div class="option-description">Важливо розуміти особливості медіа-індустрії та її вимоги</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Психологічна готовність</div>
+                            <div class="option-description">Потрібно подолати хвилювання та страх перед співбесідою</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Професійна етика</div>
+                            <div class="option-description">Хочу зрозуміти стандарти поведінки та комунікації в медіа</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Розвиток навичок</div>
+                            <div class="option-description">Важливо показати потенціал та готовність до навчання</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Constraints -->
+                <tr>
+                    <td class="component-letter">C</td>
+                    <td class="component-name">Constraints<br><em>(Обмеження)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Відсутність досвіду</div>
+                            <div class="option-description">Враховуй, що я не маю професійного досвіду в медіа-сфері</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Вікові особливості</div>
+                            <div class="option-description">Адаптуй поради для 16-річного підлітка без досвіду співбесід</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Часові рамки</div>
+                            <div class="option-description">У мене є тільки тиждень на підготовку до співбесіди</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Бюджетні обмеження</div>
+                            <div class="option-description">Не можу витрачати гроші на спеціальний одяг або курси</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Онлайн-формат</div>
+                            <div class="option-description">Співбесіда буде проходити онлайн через відеозв'язок</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Мовний бар'єр</div>
+                            <div class="option-description">Співбесіда частково проходитиме англійською мовою</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Information -->
+                <tr>
+                    <td class="component-letter">I</td>
+                    <td class="component-name">Information<br><em>(Ключова інформація)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Загальні медіа-навички</div>
+                            <div class="option-description">Журналістика, контент-маркетинг, соціальні мережі, відеомонтаж</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Технічні компетенції</div>
+                            <div class="option-description">Adobe Creative Suite, відеоредактори, аналітика, CMS системи</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Soft skills</div>
+                            <div class="option-description">Комунікація, креативність, робота в команді, дедлайни</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Портфоліо та проекти</div>
+                            <div class="option-description">Шкільна газета, блог, відео для YouTube, фотографія</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Тренди індустрії</div>
+                            <div class="option-description">Digital-маркетинг, інфлюенсер-маркетинг, подкасти, TikTok</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Освітні досягнення</div>
+                            <div class="option-description">Профільні предмети, олімпіади, курси, волонтерський досвід</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Output -->
+                <tr>
+                    <td class="component-letter">O</td>
+                    <td class="component-name">Output<br><em>(Формат результату)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Комплексний план підготовки</div>
+                            <div class="option-description">Поетапний план підготовки з часовими рамками та чек-листами</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: База питань та відповідей</div>
+                            <div class="option-description">20-30 типових питань з прикладами відповідей та аналізом</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Сценарій співбесіди</div>
+                            <div class="option-description">Детальний розбір етапів співбесіди з порадами для кожного</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Поведінкові рекомендації</div>
+                            <div class="option-description">Гід з невербальної комунікації, одягу та етикету</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: Самопрезентація</div>
+                            <div class="option-description">Структура та приклади ефективної розповіді про себе</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Тренувальні вправи</div>
+                            <div class="option-description">Практичні завдання для відпрацювання навичок співбесіди</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Notes -->
+                <tr>
+                    <td class="component-letter">N</td>
+                    <td class="component-name">Notes<br><em>(Додаткові примітки)</em></td>
+                    <td class="option-cell">
+                        <div class="option-item">
+                            <div class="option-title">Вариант 1: Мотиваційні поради</div>
+                            <div class="option-description">Додай поради для подолання страху та підвищення впевненості</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 2: Помилки, яких треба уникати</div>
+                            <div class="option-description">Список найпоширеніших помилок молодих кандидатів</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 3: Особливості українського ринку</div>
+                            <div class="option-description">Специфіка медіа-індустрії та корпоративної культури в Україні</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 4: Ресурси для розвитку</div>
+                            <div class="option-description">Корисні книги, курси, YouTube-канали про кар'єру в медіа</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 5: План дій після співбесіди</div>
+                            <div class="option-description">Що робити після співбесіди: follow-up, аналіз, наступні кроки</div>
+                        </div>
+                        <div class="option-item">
+                            <div class="option-title">Вариант 6: Альтернативні можливості</div>
+                            <div class="option-description">Інші варіанти розвитку в медіа, якщо не пройшов відбір</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="example-section">
+            <h4>Приклад сформованого промпту:</h4>
+            <div class="example-prompt">
+                "Готуюся до співбесіди на літнє стажування в медіа-компанії для школярів (P). Ти досвідчений HR-фахівець медіа-індустрії, я підліток без досвіду роботи (R). Потрібні конкретні поради, які можна застосувати вже завтра (E). Враховуй, що я не маю професійного досвіду в медіа-сфері (C). Мої навички: журналістика, контент-маркетинг, соціальні мережі, відеомонтаж (I). База питань та відповідей: 20-30 типових питань з прикладами відповідей та аналізом (O). Додай поради для подолання страху та підвищення впевненості (N)."
+            </div>
+        </div>
+    </div>
+</body>
+</html>
