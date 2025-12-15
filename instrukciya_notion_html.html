@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практична робота: Створення інтерактивних тестів у Notion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .header-info div {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .goal {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .goal h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .requirements {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .requirements h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .requirements li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .requirements li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .step {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .step-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: white;
+            color: #667eea;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .step-content {
+            padding: 0 20px;
+        }
+
+        .substep {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .substep:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .code-box {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            border-left: 4px solid #667eea;
+        }
+
+        .prompt-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .prompt-box h4 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .prompt-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .alert strong {
+            color: #856404;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        ul.custom-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.custom-list li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        ul.custom-list li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .step {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Практична робота</h1>
+            <h2>Створення інтерактивних тестів у Notion на основі відеоматеріалів</h2>
+            <div class="header-info">
+                <div>👨‍🎓 Клас: 10</div>
+                <div>⏱️ Час: 45 хвилин</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="goal">
+                <h2>🎯 МЕТА РОБОТИ:</h2>
+                <p>Навчитися створювати інтерактивні навчальні матеріали, використовуючи AI-інструменти та платформу Notion для організації навчального контенту.</p>
+            </div>
+
+            <div class="requirements">
+                <h3>💻 ОБЛАДНАННЯ ТА РЕСУРСИ:</h3>
+                <ul>
+                    <li>Комп'ютер з доступом до Інтернету</li>
+                    <li>Браузер Google Chrome або Firefox</li>
+                    <li>Акаунт у Notion (безкоштовний)</li>
+                    <li>AI-асистент (Claude.ai, ChatGPT або інші)</li>
+                </ul>
+            </div>
+
+            <!-- КРОК 1 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">ВИБІР ВІДЕО ТА КОПІЮВАННЯ ПОСИЛАННЯ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Відкрийте YouTube у браузері</div>
+                    <div class="substep">Знайдіть навчальне відео за темою (наприклад, про роботу з Notion)</div>
+                    <div class="substep">Скопіюйте посилання на відео:
+                        <ul class="custom-list" style="margin-top: 10px;">
+                            <li>Натисніть правою кнопкою миші на відео</li>
+                            <li>Оберіть "Копіювати URL-адресу відео"</li>
+                        </ul>
+                    </div>
+                    <div class="example">
+                        Приклад посилання:<br>
+                        https://www.youtube.com/watch?v=XXXXXXXXXXX
+                    </div>
+                    <div class="alert">
+                        <strong>⚠️ УВАГА!</strong> Переконайтеся, що відео має українські субтитри або автоматичні субтитри, які можна перекласти.
+                    </div>
+                </div>
+            </div>
+
+            <!-- КРОК 2 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">ЗАВАНТАЖЕННЯ СУБТИТРІВ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Відкрийте сайт DownSub: <strong>https://downsub.com/</strong></div>
+                    <div class="substep">Вставте посилання на відео у поле вводу</div>
+                    <div class="substep">Натисніть кнопку "Download" (Завантажити)</div>
+                    <div class="substep">Зачекайте, поки сайт обробить відео</div>
+                    <div class="substep">Оберіть мову субтитрів:
+                        <ul class="custom-list" style="margin-top: 10px;">
+                            <li>Якщо відео українською - оберіть "Ukrainian"</li>
+                            <li>Якщо відео іншою мовою - оберіть потрібну мову</li>
+                        </ul>
+                    </div>
+                    <div class="substep">Натисніть "Download" біля формату TXT або SRT</div>
+                    <div class="substep">Збережіть файл на комп'ютер</div>
+                    <div class="info-box">
+                        <strong>ℹ️ АЛЬТЕРНАТИВА:</strong> Якщо DownSub не працює, використайте:<br>
+                        • https://savesubs.com/<br>
+                        • https://youtubetranscript.com/
+                    </div>
+                </div>
+            </div>
+
+            <!-- КРОК 3 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">ВІДКРИТТЯ ФАЙЛУ СУБТИТРІВ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Знайдіть завантажений файл у папці "Завантаження"</div>
+                    <div class="substep">Відкрийте файл у Блокноті (Notepad) або будь-якому текстовому редакторі</div>
+                    <div class="substep">Виділіть весь текст (Ctrl + A)</div>
+                    <div class="substep">Скопіюйте текст (Ctrl + C)</div>
+                </div>
+            </div>
+
+            <!-- КРОК 4 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">ГЕНЕРАЦІЯ ТЕСТІВ ЗА ДОПОМОГОЮ AI</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Відкрийте AI-асистента (наприклад, Claude.ai або ChatGPT)</div>
+                    <div class="substep">Вставте наступний промпт:</div>
+                    
+                    <div class="prompt-box">
+                        <h4>📝 ПРОМПТ ДЛЯ AI:</h4>
+                        <div class="prompt-content">Я надаю тобі субтитри з навчального відео. Створи на основі цих субтитрів 20 тестових питань з відповідями у форматі toggle-блоків для Notion.
+
+ВИМОГИ:
+1. Створи рівно 20 питань
+2. Питання мають бути різного рівня складності:
+   - 8 питань легкого рівня (факти, терміни, визначення)
+   - 8 питань середнього рівня (розуміння процесів, порівняння)
+   - 4 питання складного рівня (аналіз, застосування)
+3. Кожне питання має починатися з емодзі ❓
+4. Кожна відповідь має починатися з емодзі ✅
+5. Використовуй жирний шрифт для слів "Питання" та "Відповідь"
+6. Нумеруй питання від 1 до 20
+7. Відповіді мають бути повними та зрозумілими
+
+ФОРМАТ ВИВОДУ:
+- ❓ **Питання 1:** [текст питання]
+    - ✅ **Відповідь:** [текст відповіді]
+
+Ось субтитри з відео:
+[ВСТАВТЕ СЮДИ СКОПІЙОВАНІ СУБТИТРИ]</div>
+                    </div>
+                    
+                    <div class="substep">Вставте скопійовані субтитри після тексту промпту</div>
+                    <div class="substep">Натисніть "Надіслати" або "Enter"</div>
+                    <div class="substep">Дочекайтеся, поки AI створить 20 питань</div>
+                    <div class="substep">Скопіюйте всі згенеровані питання та відповіді</div>
+                </div>
+            </div>
+
+            <!-- КРОК 5 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">СТВОРЕННЯ HTML-ФАЙЛУ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">У тому ж чаті з AI напишіть новий промпт:</div>
+                    
+                    <div class="prompt-box">
+                        <h4>📝 ПРОМПТ ДЛЯ СТВОРЕННЯ HTML:</h4>
+                        <div class="prompt-content">Тепер створи HTML-файл з цих питань, використовуючи теги &lt;details&gt; та &lt;summary&gt; для toggle-блоків. HTML має бути готовим для імпорту у Notion.
+
+ВИМОГИ ДО HTML:
+1. Використовуй структуру: &lt;details&gt;&lt;summary&gt;питання&lt;/summary&gt;&lt;p&gt;відповідь&lt;/p&gt;&lt;/details&gt;
+2. Включи базову HTML-структуру з &lt;!DOCTYPE html&gt;
+3. Встанови кодування UTF-8 для коректного відображення української
+4. Додай заголовок &lt;h1&gt; з назвою теми
+5. Зберігай всі емодзі та форматування
+
+Створи повний HTML-код, який я зможу завантажити як файл.</div>
+                    </div>
+                    
+                    <div class="substep">Дочекайтеся генерації HTML-коду</div>
+                    <div class="substep">Скопіюйте весь HTML-код (від &lt;!DOCTYPE html&gt; до &lt;/html&gt;)</div>
+                </div>
+            </div>
+
+            <!-- КРОК 6 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">ЗБЕРЕЖЕННЯ HTML-ФАЙЛУ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Відкрийте Блокнот (Notepad)</div>
+                    <div class="substep">Вставте скопійований HTML-код (Ctrl + V)</div>
+                    <div class="substep">Натисніть "Файл" → "Зберегти як..."</div>
+                    <div class="substep">У полі "Ім'я файлу" введіть: <strong>test_notion.html</strong></div>
+                    <div class="substep">У полі "Тип файлу" оберіть <strong>"Всі файли (*.*)"</strong></div>
+                    <div class="substep">У полі "Кодування" оберіть <strong>"UTF-8"</strong></div>
+                    <div class="substep">Збережіть файл на Робочий стіл</div>
+                    
+                    <div class="alert">
+                        <strong>⚠️ ВАЖЛИВО!</strong> Файл обов'язково має мати розширення .html і кодування UTF-8!
+                    </div>
+                </div>
+            </div>
+
+            <!-- КРОК 7 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">7</div>
+                    <div class="step-title">ІМПОРТ У NOTION</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Відкрийте Notion у браузері: <strong>https://notion.so</strong></div>
+                    <div class="substep">Увійдіть у свій акаунт (або створіть новий, якщо потрібно)</div>
+                    <div class="substep">Створіть нову сторінку:
+                        <ul class="custom-list" style="margin-top: 10px;">
+                            <li>Натисніть "+ New page" у лівому меню</li>
+                            <li>Або натисніть "+" у робочій області</li>
+                        </ul>
+                    </div>
+                    <div class="substep">Дайте сторінці назву (наприклад, "Тестування з [назва теми]")</div>
+                    <div class="substep">Натисніть на три крапки "⋮⋮⋮" у правому верхньому куті сторінки</div>
+                    <div class="substep">Оберіть "Import" (Імпорт)</div>
+                    <div class="substep">Виберіть "HTML" зі списку форматів</div>
+                    <div class="substep">Натисніть "Upload a file" або перетягніть файл test_notion.html</div>
+                    <div class="substep">Дочекайтеся завершення імпорту</div>
+                </div>
+            </div>
+
+            <!-- КРОК 8 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">8</div>
+                    <div class="step-title">ПЕРЕВІРКА ТА ТЕСТУВАННЯ</div>
+                </div>
+                <div class="step-content">
+                    <div class="substep">Перевірте, чи всі 20 питань імпортувалися</div>
+                    <div class="substep">Клацніть на кожне питання - воно має розкриватися та показувати відповідь</div>
+                    <div class="substep">Переконайтеся, що текст відображається коректно (без "крякозябр")</div>
+                    <div class="substep">Якщо є помилки - виправте їх безпосередньо у Notion</div>
+                    
+                    <div class="success-box">
+                        <strong>✅ ГОТОВО!</strong> Ви успішно створили інтерактивні тести у Notion!
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
