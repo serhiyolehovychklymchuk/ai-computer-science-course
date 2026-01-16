@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система обліку шкільних проєктів - Демонстрація</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .notion-page {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300"><rect fill="%234f46e5" width="1200" height="300"/><path fill="%235b21b6" d="M0,150 Q300,50 600,150 T1200,150 L1200,300 L0,300 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-icon {
+            font-size: 80px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .page-content {
+            padding: 40px;
+        }
+
+        .page-title {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .page-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e5e5;
+            padding-bottom: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #f5f5f5;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-content {
+            display: none;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        /* Таблиця */
+        .table-view {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status.idea { background: #e0e7ff; color: #4338ca; }
+        .status.progress { background: #fef3c7; color: #92400e; }
+        .status.done { background: #d1fae5; color: #065f46; }
+        .status.defended { background: #dbeafe; color: #1e40af; }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 2px;
+            border-radius: 8px;
+            font-size: 11px;
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .class-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Канбан */
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .kanban-column {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .kanban-header {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kanban-card {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .card-meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .card-tags {
+            margin-top: 8px;
+        }
+
+        /* Календар */
+        .calendar {
+            margin-top: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-month {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 100px;
+            background: white;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #333;
+        }
+
+        .calendar-event {
+            background: #667eea;
+            color: white;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .calendar-event:hover {
+            background: #5568d3;
+        }
+
+        /* Галерея */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .gallery-cover {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .gallery-content {
+            padding: 16px;
+        }
+
+        .gallery-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .gallery-meta {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        /* Форма */
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-label .required {
+            color: #ef4444;
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #5568d3;
+        }
+
+        @media (max-width: 768px) {
+            .kanban {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                gap: 5px;
+            }
+            
+            .calendar-day {
+                min-height: 80px;
+                padding: 4px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Система обліку шкільних проєктів</h1>
+        
+        <div class="notion-page">
+            <div class="page-header">
+                <div class="page-icon">🎓</div>
+            </div>
+            
+            <div class="page-content">
+                <h2 class="page-title">Учнівські проєкти</h2>
+                <p class="page-description">База даних для відстеження та управління учнівськими проєктами. Реєструйте свої ідеї, відстежуйте прогрес та діліться результатами.</p>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="showView('table')">📊 Таблиця</div>
+                    <div class="tab" onclick="showView('kanban')">📋 Канбан</div>
+                    <div class="tab" onclick="showView('calendar')">📅 Календар</div>
+                    <div class="tab" onclick="showView('gallery')">🖼️ Галерея</div>
+                    <div class="tab" onclick="showView('form')">➕ Нова реєстрація</div>
+                </div>
+
+                <!-- Таблиця -->
+                <div id="table" class="view-content active">
+                    <div class="table-view">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Назва проєкту</th>
+                                    <th>Автор</th>
+                                    <th>Клас</th>
+                                    <th>Тип проєкту</th>
+                                    <th>Термін здачі</th>
+                                    <th>Статус</th>
+                                    <th>Оцінка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>AI-помічник для вивчення математики</strong></td>
+                                    <td>Іванов Олексій</td>
+                                    <td><span class="class-badge">10-А</span></td>
+                                    <td>
+                                        <span class="tag">Програмування</span>
+                                        <span class="tag">Дослідження</span>
+                                    </td>
+                                    <td>15 лютого 2025</td>
+                                    <td><span class="status progress">В роботі</span></td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Екологічний моніторинг міста</strong></td>
+                                    <td>Петренко Марія, Коваль Ірина</td>
+                                    <td><span class="class-badge">10-Б</span></td>
+                                    <td>
+                                        <span class="tag">Дослідження</span>
+                                        <span class="tag">Соціальний</span>
+                                    </td>
+                                    <td>28 лютого 2025</td>
+                                    <td><span class="status idea">Ідея</span></td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Віртуальний музей шкільної історії</strong></td>
+                                    <td>Шевченко Дмитро</td>
+                                    <td><span class="class-badge">10-А</span></td>
+                                    <td>
+                                        <span class="tag">Креативний</span>
+                                        <span class="tag">Програмування</span>
+                                    </td>
+                                    <td>10 березня 2025</td>
+                                    <td><span class="status done">Готово</span></td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Аналіз соціальних мереж підлітків</strong></td>
+                                    <td>Мельник Анна</td>
+                                    <td><span class="class-badge">10-В</span></td>
+                                    <td>
+                                        <span class="tag">Презентація</span>
+                                        <span class="tag">Дослідження</span>
+                                    </td>
+                                    <td>05 лютого 2025</td>
+                                    <td><span class="status defended">Захищено</span></td>
+                                    <td>12</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Розумна система поливу рослин</strong></td>
+                                    <td>Бондаренко Віктор, Сидоренко Павло</td>
+                                    <td><span class="class-badge">10-Б</span></td>
+                                    <td>
+                                        <span class="tag">Програмування</span>
+                                    </td>
+                                    <td>20 лютого 2025</td>
+                                    <td><span class="status progress">В роботі</span></td>
+                                    <td>—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Канбан -->
+                <div id="kanban" class="view-content">
+                    <div class="kanban">
+                        <div class="kanban-column">
+                            <div class="kanban-header">💡 Ідея (1)</div>
+                            <div class="kanban-card">
+                                <div class="card-title">Екологічний моніторинг міста</div>
+                                <div class="card-meta">👥 Петренко Марія, Коваль Ірина</div>
+                                <div class="card-meta">📅 28 лютого 2025</div>
+                                <div class="card-meta"><span class="class-badge">10-Б</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Дослідження</span>
+                                    <span class="tag">Соціальний</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="kanban-column">
+                            <div class="kanban-header">⚙️ В роботі (2)</div>
+                            <div class="kanban-card">
+                                <div class="card-title">AI-помічник для вивчення математики</div>
+                                <div class="card-meta">👤 Іванов Олексій</div>
+                                <div class="card-meta">📅 15 лютого 2025</div>
+                                <div class="card-meta"><span class="class-badge">10-А</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Програмування</span>
+                                    <span class="tag">Дослідження</span>
+                                </div>
+                            </div>
+                            <div class="kanban-card">
+                                <div class="card-title">Розумна система поливу рослин</div>
+                                <div class="card-meta">👥 Бондаренко Віктор, Сидоренко Павло</div>
+                                <div class="card-meta">📅 20 лютого 2025</div>
+                                <div class="card-meta"><span class="class-badge">10-Б</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Програмування</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="kanban-column">
+                            <div class="kanban-header">✅ Готово (1)</div>
+                            <div class="kanban-card">
+                                <div class="card-title">Віртуальний музей шкільної історії</div>
+                                <div class="card-meta">👤 Шевченко Дмитро</div>
+                                <div class="card-meta">📅 10 березня 2025</div>
+                                <div class="card-meta"><span class="class-badge">10-А</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Креативний</span>
+                                    <span class="tag">Програмування</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="kanban-column">
+                            <div class="kanban-header">🎓 Захищено (1)</div>
+                            <div class="kanban-card">
+                                <div class="card-title">Аналіз соціальних мереж підлітків</div>
+                                <div class="card-meta">👤 Мельник Анна</div>
+                                <div class="card-meta">📅 05 лютого 2025 • ⭐ 12</div>
+                                <div class="card-meta"><span class="class-badge">10-В</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Презентація</span>
+                                    <span class="tag">Дослідження</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Календар -->
+                <div id="calendar" class="view-content">
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <div class="calendar-month">Лютий 2025</div>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day-header">Пн</div>
+                            <div class="calendar-day-header">Вт</div>
+                            <div class="calendar-day-header">Ср</div>
+                            <div class="calendar-day-header">Чт</div>
+                            <div class="calendar-day-header">Пт</div>
+                            <div class="calendar-day-header">Сб</div>
+                            <div class="calendar-day-header">Нд</div>
+                            
+                            <div class="calendar-day" style="opacity: 0.3;"><div class="day-number">27</div></div>
+                            <div class="calendar-day" style="opacity: 0.3;"><div class="day-number">28</div></div>
+                            <div class="calendar-day" style="opacity: 0.3;"><div class="day-number">29</div></div>
+                            <div class="calendar-day" style="opacity: 0.3;"><div class="day-number">30</div></div>
+                            <div class="calendar-day" style="opacity: 0.3;"><div class="day-number">31</div></div>
+                            <div class="calendar-day"><div class="day-number">1</div></div>
+                            <div class="calendar-day"><div class="day-number">2</div></div>
+                            
+                            <div class="calendar-day"><div class="day-number">3</div></div>
+                            <div class="calendar-day"><div class="day-number">4</div></div>
+                            <div class="calendar-day">
+                                <div class="day-number">5</div>
+                                <div class="calendar-event">Аналіз соціальних мереж</div>
+                            </div>
+                            <div class="calendar-day"><div class="day-number">6</div></div>
+                            <div class="calendar-day"><div class="day-number">7</div></div>
+                            <div class="calendar-day"><div class="day-number">8</div></div>
+                            <div class="calendar-day"><div class="day-number">9</div></div>
+                            
+                            <div class="calendar-day"><div class="day-number">10</div></div>
+                            <div class="calendar-day"><div class="day-number">11</div></div>
+                            <div class="calendar-day"><div class="day-number">12</div></div>
+                            <div class="calendar-day"><div class="day-number">13</div></div>
+                            <div class="calendar-day"><div class="day-number">14</div></div>
+                            <div class="calendar-day">
+                                <div class="day-number">15</div>
+                                <div class="calendar-event">AI-помічник математика</div>
+                            </div>
+                            <div class="calendar-day"><div class="day-number">16</div></div>
+                            
+                            <div class="calendar-day"><div class="day-number">17</div></div>
+                            <div class="calendar-day"><div class="day-number">18</div></div>
+                            <div class="calendar-day"><div class="day-number">19</div></div>
+                            <div class="calendar-day">
+                                <div class="day-number">20</div>
+                                <div class="calendar-event">Розумна система поливу</div>
+                            </div>
+                            <div class="calendar-day"><div class="day-number">21</div></div>
+                            <div class="calendar-day"><div class="day-number">22</div></div>
+                            <div class="calendar-day"><div class="day-number">23</div></div>
+                            
+                            <div class="calendar-day"><div class="day-number">24</div></div>
+                            <div class="calendar-day"><div class="day-number">25</div></div>
+                            <div class="calendar-day"><div class="day-number">26</div></div>
+                            <div class="calendar-day"><div class="day-number">27</div></div>
+                            <div class="calendar-day">
+                                <div class="day-number">28</div>
+                                <div class="calendar-event">Екологічний моніторинг</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Галерея -->
+                <div id="gallery" class="view-content">
+                    <div class="gallery">
+                        <div class="gallery-card">
+                            <div class="gallery-cover" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🤖</div>
+                            <div class="gallery-content">
+                                <div class="gallery-title">AI-помічник для вивчення математики</div>
+                                <div class="gallery-meta">👤 Іванов Олексій • <span class="class-badge">10-А</span></div>
+                                <div class="gallery-meta">📅 15 лютого 2025</div>
+                                <div class="gallery-meta"><span class="status progress">В роботі</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Програмування</span>
+                                    <span class="tag">Дослідження</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-card">
+                            <div class="gallery-cover" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">🌱</div>
+                            <div class="gallery-content">
+                                <div class="gallery-title">Екологічний моніторинг міста</div>
+                                <div class="gallery-meta">👥 Петренко Марія, Коваль Ірина • <span class="class-badge">10-Б</span></div>
+                                <div class="gallery-meta">📅 28 лютого 2025</div>
+                                <div class="gallery-meta"><span class="status idea">Ідея</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Дослідження</span>
+                                    <span class="tag">Соціальний</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-card">
+                            <div class="gallery-cover" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">🏛️</div>
+                            <div class="gallery-content">
+                                <div class="gallery-title">Віртуальний музей шкільної історії</div>
+                                <div class="gallery-meta">👤 Шевченко Дмитро • <span class="class-badge">10-А</span></div>
+                                <div class="gallery-meta">📅 10 березня 2025 • ⭐ 11</div>
+                                <div class="gallery-meta"><span class="status done">Готово</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Креативний</span>
+                                    <span class="tag">Програмування</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-card">
+                            <div class="gallery-cover" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📱</div>
+                            <div class="gallery-content">
+                                <div class="gallery-title">Аналіз соціальних мереж підлітків</div>
+                                <div class="gallery-meta">👤 Мельник Анна • <span class="class-badge">10-В</span></div>
+                                <div class="gallery-meta">📅 05 лютого 2025 • ⭐ 12</div>
+                                <div class="gallery-meta"><span class="status defended">Захищено</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Презентація</span>
+                                    <span class="tag">Дослідження</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-card">
+                            <div class="gallery-cover" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">💧</div>
+                            <div class="gallery-content">
+                                <div class="gallery-title">Розумна система поливу рослин</div>
+                                <div class="gallery-meta">👥 Бондаренко Віктор, Сидоренко Павло • <span class="class-badge">10-Б</span></div>
+                                <div class="gallery-meta">📅 20 лютого 2025</div>
+                                <div class="gallery-meta"><span class="status progress">В роботі</span></div>
+                                <div class="card-tags">
+                                    <span class="tag">Програмування</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Форма -->
+                <div id="form" class="view-content">
+                    <div class="form-section">
+                        <div class="form-header">
+                            <div style="font-size: 64px; margin-bottom: 16px;">📝</div>
+                            <h3 class="form-title">Реєстрація учнівського проєкту</h3>
+                            <p class="form-description">Заповніть форму для реєстрації вашого проєкту. Після схвалення вчителем ви зможете розпочати роботу.</p>
+                        </div>
+                        
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Назва проєкту <span class="required">*</span></label>
+                                <input type="text" placeholder="Введіть назву вашого проєкту" required>
+                                <div class="form-hint">Коротка та зрозуміла назва (до 100 символів)</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Автор/Автори <span class="required">*</span></label>
+                                <input type="text" placeholder="Прізвище Ім'я або кілька учнів через кому" required>
+                                <div class="form-hint">Вкажіть ПІБ усіх учасників проєкту</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Клас <span class="required">*</span></label>
+                                <select required>
+                                    <option value="">Оберіть клас</option>
+                                    <option value="10-A">10-А</option>
+                                    <option value="10-B">10-Б</option>
+                                    <option value="10-V">10-В</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Тип проєкту <span class="required">*</span></label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="type1" value="research">
+                                        <label for="type1">Дослідження</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="type2" value="presentation">
+                                        <label for="type2">Презентація</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="type3" value="programming">
+                                        <label for="type3">Програмування</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="type4" value="creative">
+                                        <label for="type4">Креативний</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="type5" value="social">
+                                        <label for="type5">Соціальний</label>
+                                    </div>
+                                </div>
+                                <div class="form-hint">Оберіть один або кілька типів, що найкраще описують ваш проєкт</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Термін здачі <span class="required">*</span></label>
+                                <input type="date" required>
+                                <div class="form-hint">Очікувана дата завершення проєкту</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Опис проєкту <span class="required">*</span></label>
+                                <textarea placeholder="Детально опишіть вашу ідею..." required></textarea>
+                                <div class="form-hint">Коротко опишіть мету та очікуваний результат проєкту (200-500 слів)</div>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Відправити на розгляд</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showView(viewId) {
+            // Приховати всі види
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Деактивувати всі таби
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Показати обраний вид
+            document.getElementById(viewId).classList.add('active');
+            
+            // Активувати обраний таб
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
