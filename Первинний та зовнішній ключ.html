@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практичні завдання: Реляційні бази даних в Microsoft Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .task {
+            margin-bottom: 50px;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            background: #f8f9ff;
+        }
+        
+        .task-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: -30px -30px 25px -30px;
+            border-radius: 9px 9px 0 0;
+        }
+        
+        .task-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+        }
+        
+        .task-header p {
+            font-size: 1.05em;
+            opacity: 0.95;
+        }
+        
+        .table-section {
+            margin: 30px 0;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+        
+        .key-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .key-info strong {
+            color: #856404;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f8f9ff;
+        }
+        
+        tbody tr:hover {
+            background-color: #e8eaff;
+            transition: background-color 0.3s;
+        }
+        
+        .primary-key {
+            background-color: #d4edda;
+            font-weight: bold;
+            color: #155724;
+        }
+        
+        .foreign-key {
+            background-color: #fff3cd;
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        .relationship {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+            border-left: 5px solid #2196F3;
+        }
+        
+        .relationship h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .relationship-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .table-box {
+            background: white;
+            padding: 15px 25px;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+        }
+        
+        .instructions {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        
+        .instructions h4 {
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        
+        .instructions ol {
+            margin-left: 25px;
+            color: #1b5e20;
+        }
+        
+        .instructions li {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .note {
+            background: #f0f4ff;
+            border: 2px dashed #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .task {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 Реляційні бази даних в Microsoft Access</h1>
+            <p>Практичні завдання для 10 класу: Первинний і зовнішній ключі</p>
+        </header>
+        
+        <div class="content">
+            
+            <!-- ЗАВДАННЯ 1: БІБЛІОТЕКА -->
+            <div class="task">
+                <div class="task-header">
+                    <h2>📚 Завдання 1: База даних "Бібліотека"</h2>
+                    <p>Облік книг та їх авторів</p>
+                </div>
+                
+                <div class="instructions">
+                    <h4>📋 Що потрібно зробити:</h4>
+                    <ol>
+                        <li>Створіть нову базу даних з назвою "Бібліотека.accdb"</li>
+                        <li>Створіть таблицю "Автори" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_автора"</li>
+                        <li>Заповніть таблицю даними з таблиці нижче</li>
+                        <li>Створіть таблицю "Книги" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_книги"</li>
+                        <li>Заповніть таблицю даними</li>
+                        <li>Встановіть зв'язок між таблицями через схему даних</li>
+                    </ol>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 1: Автори</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_автора (тип: Лічильник)
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_автора</th>
+                                <th>Прізвище</th>
+                                <th>Ім'я</th>
+                                <th>По_батькові</th>
+                                <th>Рік_народження</th>
+                                <th>Країна</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Шевченко</td>
+                                <td>Тарас</td>
+                                <td>Григорович</td>
+                                <td>1814</td>
+                                <td>Україна</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Франко</td>
+                                <td>Іван</td>
+                                <td>Якович</td>
+                                <td>1856</td>
+                                <td>Україна</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Українка</td>
+                                <td>Леся</td>
+                                <td>-</td>
+                                <td>1871</td>
+                                <td>Україна</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Коцюбинський</td>
+                                <td>Михайло</td>
+                                <td>Михайлович</td>
+                                <td>1864</td>
+                                <td>Україна</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Стефаник</td>
+                                <td>Василь</td>
+                                <td>Семенович</td>
+                                <td>1871</td>
+                                <td>Україна</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 2: Книги</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_книги (тип: Лічильник)<br>
+                        <strong>🔗 Зовнішній ключ:</strong> Код_автора (тип: Числовий) → посилається на Автори.Код_автора
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_книги</th>
+                                <th>Назва</th>
+                                <th>Рік_видання</th>
+                                <th>Жанр</th>
+                                <th>Кількість_сторінок</th>
+                                <th class="foreign-key">Код_автора</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Кобзар</td>
+                                <td>1840</td>
+                                <td>Поезія</td>
+                                <td>152</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Заповіт</td>
+                                <td>1845</td>
+                                <td>Поезія</td>
+                                <td>8</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Гайдамаки</td>
+                                <td>1841</td>
+                                <td>Поема</td>
+                                <td>96</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Захар Беркут</td>
+                                <td>1883</td>
+                                <td>Роман</td>
+                                <td>320</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Каменярі</td>
+                                <td>1878</td>
+                                <td>Поезія</td>
+                                <td>24</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">6</td>
+                                <td>Лісова пісня</td>
+                                <td>1911</td>
+                                <td>Драма</td>
+                                <td>112</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">7</td>
+                                <td>Бояриня</td>
+                                <td>1914</td>
+                                <td>Драма</td>
+                                <td>96</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">8</td>
+                                <td>Тіні забутих предків</td>
+                                <td>1911</td>
+                                <td>Повість</td>
+                                <td>64</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">9</td>
+                                <td>Intermezzo</td>
+                                <td>1908</td>
+                                <td>Повість</td>
+                                <td>48</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">10</td>
+                                <td>Камінний хрест</td>
+                                <td>1900</td>
+                                <td>Оповідання</td>
+                                <td>32</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="relationship">
+                    <h4>🔗 Зв'язок між таблицями:</h4>
+                    <div class="relationship-diagram">
+                        <div class="table-box">Автори<br>(Код_автора)</div>
+                        <div class="arrow">1 ➜ ∞</div>
+                        <div class="table-box">Книги<br>(Код_автора)</div>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px;">
+                        <strong>Один автор може написати багато книг</strong>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- ЗАВДАННЯ 2: ШКОЛА -->
+            <div class="task">
+                <div class="task-header">
+                    <h2>🎓 Завдання 2: База даних "Школа"</h2>
+                    <p>Облік учнів та їх оцінок</p>
+                </div>
+                
+                <div class="instructions">
+                    <h4>📋 Що потрібно зробити:</h4>
+                    <ol>
+                        <li>Створіть нову базу даних з назвою "Школа.accdb"</li>
+                        <li>Створіть таблицю "Учні" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_учня"</li>
+                        <li>Заповніть таблицю даними з таблиці нижче</li>
+                        <li>Створіть таблицю "Оцінки" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_оцінки"</li>
+                        <li>Заповніть таблицю даними</li>
+                        <li>Встановіть зв'язок між таблицями через схему даних</li>
+                    </ol>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 1: Учні</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_учня (тип: Лічильник)
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_учня</th>
+                                <th>Прізвище</th>
+                                <th>Ім'я</th>
+                                <th>По_батькові</th>
+                                <th>Дата_народження</th>
+                                <th>Клас</th>
+                                <th>Телефон</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Іваненко</td>
+                                <td>Петро</td>
+                                <td>Іванович</td>
+                                <td>15.03.2009</td>
+                                <td>10-А</td>
+                                <td>+380671234567</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Коваленко</td>
+                                <td>Марія</td>
+                                <td>Олександрівна</td>
+                                <td>22.07.2009</td>
+                                <td>10-А</td>
+                                <td>+380672345678</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Сидоренко</td>
+                                <td>Олег</td>
+                                <td>Петрович</td>
+                                <td>10.11.2009</td>
+                                <td>10-Б</td>
+                                <td>+380673456789</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Мельник</td>
+                                <td>Анна</td>
+                                <td>Василівна</td>
+                                <td>05.01.2009</td>
+                                <td>10-Б</td>
+                                <td>+380674567890</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Бондаренко</td>
+                                <td>Дмитро</td>
+                                <td>Сергійович</td>
+                                <td>18.09.2009</td>
+                                <td>10-А</td>
+                                <td>+380675678901</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">6</td>
+                                <td>Ткаченко</td>
+                                <td>Софія</td>
+                                <td>Михайлівна</td>
+                                <td>27.04.2009</td>
+                                <td>10-Б</td>
+                                <td>+380676789012</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 2: Оцінки</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_оцінки (тип: Лічильник)<br>
+                        <strong>🔗 Зовнішній ключ:</strong> Код_учня (тип: Числовий) → посилається на Учні.Код_учня
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_оцінки</th>
+                                <th>Предмет</th>
+                                <th>Оцінка</th>
+                                <th>Дата</th>
+                                <th>Тип_роботи</th>
+                                <th class="foreign-key">Код_учня</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Математика</td>
+                                <td>11</td>
+                                <td>15.01.2026</td>
+                                <td>Контрольна робота</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Інформатика</td>
+                                <td>12</td>
+                                <td>16.01.2026</td>
+                                <td>Практична робота</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Фізика</td>
+                                <td>10</td>
+                                <td>17.01.2026</td>
+                                <td>Лабораторна робота</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Математика</td>
+                                <td>12</td>
+                                <td>15.01.2026</td>
+                                <td>Контрольна робота</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Інформатика</td>
+                                <td>11</td>
+                                <td>16.01.2026</td>
+                                <td>Практична робота</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">6</td>
+                                <td>Українська мова</td>
+                                <td>10</td>
+                                <td>18.01.2026</td>
+                                <td>Диктант</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">7</td>
+                                <td>Математика</td>
+                                <td>9</td>
+                                <td>15.01.2026</td>
+                                <td>Контрольна робота</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">8</td>
+                                <td>Фізика</td>
+                                <td>11</td>
+                                <td>17.01.2026</td>
+                                <td>Лабораторна робота</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">9</td>
+                                <td>Інформатика</td>
+                                <td>12</td>
+                                <td>16.01.2026</td>
+                                <td>Практична робота</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">10</td>
+                                <td>Математика</td>
+                                <td>10</td>
+                                <td>15.01.2026</td>
+                                <td>Контрольна робота</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">11</td>
+                                <td>Хімія</td>
+                                <td>11</td>
+                                <td>19.01.2026</td>
+                                <td>Лабораторна робота</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">12</td>
+                                <td>Фізика</td>
+                                <td>8</td>
+                                <td>17.01.2026</td>
+                                <td>Лабораторна робота</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">13</td>
+                                <td>Інформатика</td>
+                                <td>10</td>
+                                <td>16.01.2026</td>
+                                <td>Практична робота</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">14</td>
+                                <td>Математика</td>
+                                <td>11</td>
+                                <td>15.01.2026</td>
+                                <td>Контрольна робота</td>
+                                <td class="foreign-key">6</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">15</td>
+                                <td>Українська література</td>
+                                <td>12</td>
+                                <td>20.01.2026</td>
+                                <td>Твір</td>
+                                <td class="foreign-key">6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="relationship">
+                    <h4>🔗 Зв'язок між таблицями:</h4>
+                    <div class="relationship-diagram">
+                        <div class="table-box">Учні<br>(Код_учня)</div>
+                        <div class="arrow">1 ➜ ∞</div>
+                        <div class="table-box">Оцінки<br>(Код_учня)</div>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px;">
+                        <strong>Один учень може мати багато оцінок</strong>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- ЗАВДАННЯ 3: МАГАЗИН -->
+            <div class="task">
+                <div class="task-header">
+                    <h2>🛒 Завдання 3: База даних "Магазин"</h2>
+                    <p>Облік товарів та категорій</p>
+                </div>
+                
+                <div class="instructions">
+                    <h4>📋 Що потрібно зробити:</h4>
+                    <ol>
+                        <li>Створіть нову базу даних з назвою "Магазин.accdb"</li>
+                        <li>Створіть таблицю "Категорії" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_категорії"</li>
+                        <li>Заповніть таблицю даними з таблиці нижче</li>
+                        <li>Створіть таблицю "Товари" з наведеною структурою</li>
+                        <li>Встановіть первинний ключ на поле "Код_товару"</li>
+                        <li>Заповніть таблицю даними</li>
+                        <li>Встановіть зв'язок між таблицями через схему даних</li>
+                    </ol>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 1: Категорії</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_категорії (тип: Лічильник)
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_категорії</th>
+                                <th>Назва_категорії</th>
+                                <th>Опис</th>
+                                <th>Знижка_%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Електроніка</td>
+                                <td>Комп'ютери, смартфони, планшети та аксесуари</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Побутова техніка</td>
+                                <td>Холодильники, пральні машини, мікрохвильовки</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Одяг та взуття</td>
+                                <td>Чоловічий та жіночий одяг, спортивне взуття</td>
+                                <td>15</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Книги та канцтовари</td>
+                                <td>Художня література, підручники, зошити, ручки</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Спорт та туризм</td>
+                                <td>Спортивне обладнання, туристичне спорядження</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">6</td>
+                                <td>Іграшки</td>
+                                <td>Дитячі іграшки, настільні ігри, конструктори</td>
+                                <td>12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-section">
+                    <h3>Таблиця 2: Товари</h3>
+                    <div class="key-info">
+                        <strong>🔑 Первинний ключ:</strong> Код_товару (тип: Лічильник)<br>
+                        <strong>🔗 Зовнішній ключ:</strong> Код_категорії (тип: Числовий) → посилається на Категорії.Код_категорії
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="primary-key">Код_товару</th>
+                                <th>Назва_товару</th>
+                                <th>Ціна_грн</th>
+                                <th>Кількість_на_складі</th>
+                                <th>Виробник</th>
+                                <th class="foreign-key">Код_категорії</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="primary-key">1</td>
+                                <td>Ноутбук ASUS VivoBook</td>
+                                <td>25000</td>
+                                <td>15</td>
+                                <td>ASUS</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">2</td>
+                                <td>Смартфон Samsung Galaxy A54</td>
+                                <td>15000</td>
+                                <td>35</td>
+                                <td>Samsung</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">3</td>
+                                <td>Планшет iPad 10.2</td>
+                                <td>18000</td>
+                                <td>20</td>
+                                <td>Apple</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">4</td>
+                                <td>Бездротові навушники AirPods</td>
+                                <td>7500</td>
+                                <td>50</td>
+                                <td>Apple</td>
+                                <td class="foreign-key">1</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">5</td>
+                                <td>Холодильник LG Side-by-Side</td>
+                                <td>35000</td>
+                                <td>8</td>
+                                <td>LG</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">6</td>
+                                <td>Пральна машина Bosch 7 кг</td>
+                                <td>18000</td>
+                                <td>12</td>
+                                <td>Bosch</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">7</td>
+                                <td>Мікрохвильова піч Samsung</td>
+                                <td>4500</td>
+                                <td>25</td>
+                                <td>Samsung</td>
+                                <td class="foreign-key">2</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">8</td>
+                                <td>Чоловіча куртка Nike</td>
+                                <td>3500</td>
+                                <td>40</td>
+                                <td>Nike</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">9</td>
+                                <td>Жіночі кросівки Adidas</td>
+                                <td>2800</td>
+                                <td>60</td>
+                                <td>Adidas</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">10</td>
+                                <td>Футболка Puma</td>
+                                <td>800</td>
+                                <td>100</td>
+                                <td>Puma</td>
+                                <td class="foreign-key">3</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">11</td>
+                                <td>Роман "Тіні забутих предків"</td>
+                                <td>250</td>
+                                <td>75</td>
+                                <td>Видавництво "А-БА-БА-ГА-ЛА-МА-ГА"</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">12</td>
+                                <td>Підручник "Інформатика 10 клас"</td>
+                                <td>320</td>
+                                <td>50</td>
+                                <td>Видавництво "Ранок"</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">13</td>
+                                <td>Зошит А5 48 аркушів</td>
+                                <td>35</td>
+                                <td>500</td>
+                                <td>Зошит України</td>
+                                <td class="foreign-key">4</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">14</td>
+                                <td>Футбольний м'яч Nike</td>
+                                <td>1200</td>
+                                <td>30</td>
+                                <td>Nike</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">15</td>
+                                <td>Велосипед гірський</td>
+                                <td>15000</td>
+                                <td>10</td>
+                                <td>Trek</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">16</td>
+                                <td>Намет туристичний 3-місний</td>
+                                <td>4500</td>
+                                <td>18</td>
+                                <td>Coleman</td>
+                                <td class="foreign-key">5</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">17</td>
+                                <td>Конструктор LEGO City</td>
+                                <td>2500</td>
+                                <td>45</td>
+                                <td>LEGO</td>
+                                <td class="foreign-key">6</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">18</td>
+                                <td>Настільна гра "Монополія"</td>
+                                <td>850</td>
+                                <td>55</td>
+                                <td>Hasbro</td>
+                                <td class="foreign-key">6</td>
+                            </tr>
+                            <tr>
+                                <td class="primary-key">19</td>
+                                <td>Лялька Barbie</td>
+                                <td>650</td>
+                                <td>70</td>
+                                <td>Mattel</td>
+                                <td class="foreign-key">6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="relationship">
+                    <h4>🔗 Зв'язок між таблицями:</h4>
+                    <div class="relationship-diagram">
+                        <div class="table-box">Категорії<br>(Код_категорії)</div>
+                        <div class="arrow">1 ➜ ∞</div>
+                        <div class="table-box">Товари<br>(Код_категорії)</div>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px;">
+                        <strong>Одна категорія може містити багато товарів</strong>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- ЗАГАЛЬНІ ВКАЗІВКИ -->
+            <div class="note">
+                <h3 style="color: #667eea; margin-bottom: 15px;">📌 Важливі вказівки:</h3>
+                <ul style="margin-left: 25px; line-height: 1.8;">
+                    <li><strong>Первинний ключ</strong> завжди має тип даних "Лічильник" і заповнюється автоматично</li>
+                    <li><strong>Зовнішній ключ</strong> має тип даних "Числовий" (ціле число, Long Integer)</li>
+                    <li>При встановленні зв'язку обов'язково увімкніть <strong>"Забезпечення цілісності даних"</strong></li>
+                    <li>Також увімкніть <strong>"Каскадне оновлення"</strong> та <strong>"Каскадне видалення"</strong></li>
+                    <li>Значення зовнішнього ключа повинно <strong>існувати</strong> в пов'язаній таблиці</li>
+                    <li>Зверніть увагу на кольорове виділення: 🟢 зелений = первинний ключ, 🟡 жовтий = зовнішній ключ</li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p>📘 Практичні завдання з Microsoft Access для 10 класу | 2025-2026 навчальний рік</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Реляційні бази даних: Первинний і зовнішній ключі</p>
+        </footer>
+    </div>
+</body>
+</html>
